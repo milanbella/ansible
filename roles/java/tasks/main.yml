@@ -1,0 +1,38 @@
+---
+- name: Check if '/opt/.ansible_state/roles/java' exists
+  stat:
+    path: /opt/.ansible_state/roles/java
+  register: ansible_state_roles_java
+- name: Installing common role
+  block:
+  - name: Install packages openjdk-11-jdk
+    apt:
+      name: "{{ packages }}"
+      update_cache: yes
+    vars:
+      packages:
+      - "openjdk-{{ java_version }}-jdk"
+    become: yes
+  - name: Set java environment '/etc/profile.d/java.sh'
+    template:
+      src: profile_java.sh
+      dest: /etc/profile.d/java.sh
+      mode: 0644
+      force: no
+    become: yes
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/java' file
+    file:
+      path: /opt/.ansible_state/roles/java
+      state: touch
+    become: yes
+  when: not ansible_state_roles_java.stat.exists 

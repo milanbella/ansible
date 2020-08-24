@@ -1,0 +1,20 @@
+execute pathogen#infect()
+
+filetype on
+filetype plugin on
+filetype indent on
+syntax enable
+let loaded_matchparen = 1
+set nohlsearch
+set nowrapscan
+set nobackup
+set tabstop=4
+set shiftwidth=4
+set nowrap
+set belloff=all
+set noincsearch
+
+colors jellybeans
+
+set t_Co=256
+

@@ -1,0 +1,39 @@
+---
+- name: Check if '/opt/.ansible_state/roles/common' exists
+  stat:
+    path: /opt/.ansible_state/roles/common
+  register: ansible_state_roles_common
+- name: Installing common role
+  block:
+  - name: Install python3-pip
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - python3-pip
+    become: yes
+  - name: Install common bash profile
+    copy:
+      src: files/bash_common.sh
+      dest: /etc/profile.d
+    become: yes
+  - name: Import vim.yml
+    import_tasks: vim.yml
+  - name: Import tmux.yml
+    import_tasks: tmux.yml
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/common' file
+    file:
+      path: /opt/.ansible_state/roles/common
+      state: touch
+    become: yes
+  when: not ansible_state_roles_common.stat.exists 

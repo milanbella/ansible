@@ -1,0 +1,119 @@
+---
+- name: Check if '/opt/.ansible_state/roles/haproxy' exists
+  stat:
+    path: /opt/.ansible_state/roles/haproxy
+  register: ansible_state_roles_haproxy
+- name: Installing haproxy
+  block:
+  - name: Download haproxy-{{ haproxy_version }}.tar.gz
+    get_url:
+      url: http://www.haproxy.org/download/{{ haproxy_minor_version }}/src/haproxy-{{ haproxy_version }}.tar.gz
+      dest: /opt
+    become: yes
+  - name: Unarchive haproxy-{{ haproxy_version }}.tar.gz
+    unarchive:
+      src: /opt/haproxy-{{ haproxy_version }}.tar.gz
+      dest: /opt
+      remote_src: yes
+    become: yes
+  - name: Install packages 
+    apt:
+      name: "{{ packages }}"
+    vars:
+      packages:
+      - libssl-dev
+      - zlib1g-dev
+      - libpcre3-dev
+      - libsystemd-dev
+      - apache2-utils
+    become: yes
+  - name: Configure rsyslog
+    template:
+      src: rsyslog.d/haproxy.conf
+      dest: /etc/rsyslog.d/haproxy.conf
+      mode: '0644'
+      force: no
+    become: yes
+  - name: Restart rsyslog
+    systemd:
+      name: rsyslog
+      state: restarted
+    become: yes
+  - name: Building /opt/haproxy-{{ haproxy_version }}
+    command: make TARGET=linux-glibc USE_OPENSSL=1 USE_ZLIB=1 USE_PCRE=1 USE_LUA=1 USE_SYSTEMD=1 LUA_INC=/opt/lua-{{ lua_version }}/src LUA_LIB=/opt/lua-{{ lua_version }}/src
+    args:
+      chdir: /opt/haproxy-{{ haproxy_version }}
+      creates: /opt/haproxy-{{ haproxy_version }}/haproxy
+  - name: Installing haproxy-{{ haproxy_version }}
+    command: make install
+    args:
+      chdir: /opt/haproxy-{{ haproxy_version }}
+      creates: /usr/local/sbin/haproxy
+    become: yes
+  - name: Ensure group 'haproxy' exists
+    group:
+      name: haproxy
+    become: yes
+  - name: Add the user 'haproxy'
+    user:
+      name: haproxy
+      group: haproxy
+      create_home: no
+    become: yes
+  - name: Create directory '/etc/haproxy' 
+    file:
+      path: /etc/haproxy
+      state: directory
+      owner: haproxy
+      group: haproxy
+      mode: '0755'
+    become: yes
+  - name: Create config '/etc/haproxy/haproxy.cfg' 
+    template:
+      src: haproxy.cfg
+      dest: /etc/haproxy/haproxy.cfg
+      owner: haproxy
+      group: haproxy
+      mode: '0644'
+      force: no
+    become: yes
+  - name: Create '/etc/haproxy/haproxy.service' 
+    template:
+      src: haproxy.service
+      dest: /etc/haproxy/haproxy.service
+      owner: haproxy
+      group: haproxy
+      mode: '0644'
+      force: no
+    become: yes
+  - name: Enable haproxy.service
+    command: systemctl enable /etc/haproxy/haproxy.service
+    args:
+      creates: /etc/systemd/system/haproxy.service
+    become: yes
+  - name: Start haproxy.service
+    command: systemctl enable /etc/haproxy/haproxy.service
+    args:
+      creates: /etc/systemd/system/haproxy.service
+    become: yes
+  - name: Start haproxy.service
+    systemd:
+      name: haproxy.service
+      state: started
+    become: yes
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/haproxy' file
+    file:
+      path: /opt/.ansible_state/roles/haproxy
+      state: touch
+    become: yes
+  when: not ansible_state_roles_haproxy.stat.exists 

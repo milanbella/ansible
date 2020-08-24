@@ -1,0 +1,12 @@
+---
+- name: Install tmux
+  yum:
+    name: "{{ packages }}"
+  vars:
+    packages:
+    - tmux
+  become: yes
+- name: Install tmux.conf
+  copy:
+    src: files/tmux/tmux.conf
+    dest: /root/.tmux.conf

@@ -1,0 +1,25 @@
+---
+- name: Ensure directory /usr/share/vim/vimfiles exists
+  file: 
+    path: /usr/share/vim/vimfiles
+    state: directory
+- name: Install vim pathogen
+  copy: 
+    src: files/vim/pathogen.vim
+    dest: /usr/share/vim/vimfiles/autoload
+  become: yes
+- name: Install vim pathogen bundles 
+  unarchive:
+    src: files/vim/bundle.tar
+    dest: /usr/share/vim/vimfiles
+  become: yes
+- name: Install custom .vimrc
+  copy: 
+    src: files/vim/vimrc
+    dest: /usr/share/vim/.vimrc
+  become: yes
+- name: Update shell profile
+  copy: 
+    src: files/vim/vim_custom.sh
+    dest: /etc/profile.d
+  become: yes

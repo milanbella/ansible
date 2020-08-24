@@ -1,0 +1,2 @@
+---
+role_postgres_postgres_password: "{{ vault_role_postgres_postgres_password }}"
