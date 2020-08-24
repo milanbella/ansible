@@ -1,0 +1,3 @@
+- hosts: idempiere_common
+  roles:
+    - idempiere_common

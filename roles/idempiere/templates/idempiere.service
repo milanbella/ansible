@@ -1,0 +1,15 @@
+[Unit]
+Description=idempiere service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=idempiere
+WorkingDirectory=/home/idempiere/idempiere-server
+ExecStart=/usr/bin/env /home/idempiere/idempiere-server/idempiere-server.sh
+
+[Install]
+WantedBy=multi-user.target

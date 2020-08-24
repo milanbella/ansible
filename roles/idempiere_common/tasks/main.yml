@@ -1,0 +1,62 @@
+- name: Check if '/opt/.ansible_state/roles/idempiere_common' exists
+  stat:
+    path: /opt/.ansible_state/roles/idempiere_common
+  register: ansible_state_roles_idempiere_common
+- name: Installing idempiere_common
+  block:
+  - name: Ensure group 'idempiere' exists
+    group:
+      name: idempiere
+    become: yes
+  - name: Add the user 'idempiere'
+    user:
+      name: idempiere
+      group: idempiere
+    become: yes
+  - name: Remove folder /home/idempiere/idempiere.gtk.linux.x86_64
+    file:
+      path: /home/idempiere/idempiere.gtk.linux.x86_64
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Remove folder /home/idempiere/idempiere-server
+    file:
+      path: /home/idempiere/idempiere-server
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Download and unpack https://sourceforge.net/projects/idempiere/files/v7.1/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip in /home/idempiere/idempiere.gtk.linux.x86_64
+    unarchive:
+      src: https://sourceforge.net/projects/idempiere/files/v7.1/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip
+      dest: /home/idempiere
+      remote_src: yes
+    become: yes
+    become_user: idempiere
+  - name: Move /home/idempiere/idempiere.gtk.linux.x86_64/idempiere-server to /home/idempiere/idempiere-server
+    command:
+      cmd: mv /home/idempiere/idempiere.gtk.linux.x86_64/idempiere-server /home/idempiere/
+      creates: /home/idempiere/idempiere-server
+    become: yes
+    become_user: idempiere
+  - name: Remove folder /home/idempiere/idempiere.gtk.linux.x86_64
+    file:
+      path: /home/idempiere/idempiere.gtk.linux.x86_64
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/idempiere_common' file
+    file:
+      path: /opt/.ansible_state/roles/idempiere_common
+      state: touch
+    become: yes
+  when: not ansible_state_roles_idempiere_common.stat.exists 

@@ -1,0 +1,65 @@
+- name: Check if '/opt/.ansible_state/roles/idempiere' exists
+  stat:
+    path: /opt/.ansible_state/roles/idempiere
+  register: ansible_state_roles_idempiere
+- name: Installing idempiere
+  block:
+  - name: Create '/home/idempiere/setup_vars.sh'
+    template:
+      src: setup_vars.sh
+      dest: /home/idempiere/setup_vars.sh
+      owner: idempiere
+      group: idempiere
+      mode: 0755
+    become: yes
+    become_user: idempiere
+  - name: Create '/home/idempiere/idempiere-server/idempiereEnv.properties'
+    template:
+      src: idempiereEnv.properties
+      dest: /home/idempiere/idempiere-server/idempiereEnv.properties
+      owner: idempiere
+      group: idempiere
+      mode: 0755
+    become: yes
+    become_user: idempiere
+  - name: Run /home/idempiere/idempiere-server/console-setup-alt.sh
+    shell: 
+      cmd: ../setup_vars.sh | ./console-setup-alt.sh
+      chdir: /home/idempiere/idempiere-server
+    become: yes
+    become_user: idempiere
+  - name: Create '/home/idempiere/idempiere.service' 
+    template:
+      src: idempiere.service
+      dest: /home/idempiere/idempiere.service
+      owner: idempiere
+      group: idempiere
+      mode: '0644'
+    become: yes
+    become_user: idempiere
+  - name: Enable idempiere.service
+    command: systemctl enable /home/idempiere/idempiere.service
+    args:
+      creates: /etc/systemd/system/idempiere.service
+    become: yes
+  - name: Start idempiere.service
+    systemd:
+      name: idempiere.service
+      state: started
+    become: yes
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/idempiere' file
+    file:
+      path: /opt/.ansible_state/roles/idempiere
+      state: touch
+    become: yes
+  when: not ansible_state_roles_idempiere.stat.exists 

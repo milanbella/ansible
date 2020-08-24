@@ -1,0 +1,60 @@
+---
+- name: Create db role 'adempiere'
+  postgresql_user:
+    login_host: "{{ postgres_host }}"
+    login_user: postgres
+    login_password: "{{ role_idempiere_db_postgres_user_password }}"
+    name: adempiere
+    password: "{{ role_idempiere_db_adempiere_user_password }}"
+    role_attr_flags: SUPERUSER
+  no_log: false
+- name: Create database 'idempiere'
+  postgresql_db:
+    login_host: "{{ postgres_host }}"
+    login_user: adempiere
+    login_password: "{{ role_idempiere_db_adempiere_user_password }}"
+    name: idempiere
+    template: template0
+    encoding: UNICODE
+    owner: adempiere
+- name: Set search_path for 'adempiere' user
+  postgresql_query:
+    login_host: "{{ postgres_host }}"
+    login_user: adempiere
+    login_password: "{{ role_idempiere_db_adempiere_user_password }}"
+    db: idempiere
+    query: "ALTER ROLE adempiere SET search_path TO adempiere, pg_catalog"
+- name: Enable extension 'uuid-ossp'
+  postgresql_ext:
+    login_host: "{{ postgres_host }}"
+    login_user: adempiere
+    login_password: "{{ role_idempiere_db_adempiere_user_password }}"
+    db: idempiere
+    name: uuid-ossp
+- name: Genereate idempiere db seed
+  command: 
+    cmd: jar xvf idempiere-server/data/seed/Adempiere_pg.jar
+    chdir: /home/idempiere 
+    creates: /home/idempiere/Adempiere_pg.dmp
+  become: yes
+  become_user: idempiere
+- name: Check if idempiere db seed was imported
+  postgresql_query:
+    login_host: "{{ postgres_host }}"
+    login_user: adempiere
+    login_password: "{{ role_idempiere_db_adempiere_user_password }}"
+    db: idempiere
+    query:  "select a_asset_id from a_asset"
+  become: yes
+  become_user: idempiere
+  register: query_a_asset
+  ignore_errors: yes
+- name: Print query_a_asset
+  debug:
+    var: query_a_asset
+- name: Import idempiere db seed
+  command: 
+    cmd: psql -f /home/idempiere/Adempiere_pg.dmp "postgresql://adempiere:{{ role_idempiere_db_adempiere_user_password }}@localhost/idempiere"
+  become: yes
+  become_user: idempiere
+  when: ('msg' in query_a_asset) and  (query_a_asset.msg.find('does not exist') != 1)

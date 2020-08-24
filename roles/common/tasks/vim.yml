@@ -3,6 +3,10 @@
   file: 
     path: /usr/share/vim/vimfiles
     state: directory
+- name: Ensure directory /usr/share/vim/vimfiles/autoload exists
+  file: 
+    path: /usr/share/vim/vimfiles/autoload
+    state: directory
 - name: Install vim pathogen
   copy: 
     src: files/vim/pathogen.vim

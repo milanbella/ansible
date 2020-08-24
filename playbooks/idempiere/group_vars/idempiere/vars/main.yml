@@ -1,0 +1,3 @@
+role_idempiere_setup_var_key_store_password: "{{vault_role_idempiere_setup_var_key_store_password}}"
+role_idempiere_setup_var_database_password: "{{vault_role_idempiere_setup_var_database_password}}"
+role_idempiere_setup_var_database_system_user_password: "{{vault_role_idempiere_setup_var_database_system_user_password}}"

@@ -1,0 +1,3 @@
+---
+role_idempiere_db_postgres_user_password: "{{ vault_role_idempiere_db_postgres_user_password }}"
+role_idempiere_db_adempiere_user_password: "{{ vault_role_idempiere_db_adempiere_user_password }}" 

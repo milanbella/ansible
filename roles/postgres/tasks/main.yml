@@ -31,7 +31,7 @@
       dest: "/etc/postgresql/{{ postgres_version }}/main/pg_hba.conf"
       owner: postgres
       group: postgres
-      mode: 0600
+      mode: 0644
     become: yes
   - name: Replace "/etc/postgresql/{{ postgres_version }}/main/postgresql.conf"
     template:
@@ -39,7 +39,7 @@
       dest: "/etc/postgresql/{{ postgres_version }}/main/postgresql.conf"
       owner: postgres
       group: postgres
-      mode: 0600
+      mode: 0644
     become: yes
   - name: Restart postgresql.service
     systemd:
