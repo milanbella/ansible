@@ -12,7 +12,6 @@
       group: idempiere
       mode: 0755
     become: yes
-    become_user: idempiere
   - name: Create '/home/idempiere/idempiere-server/idempiereEnv.properties'
     template:
       src: idempiereEnv.properties
@@ -22,6 +21,13 @@
       mode: 0755
     become: yes
     become_user: idempiere
+  - name: Ensure execute permissions on '/home/idempiere/idempiere-server/console-setup-alt.sh'
+    file:
+      path: /home/idempiere/idempiere-server/console-setup-alt.sh
+      owner: idempiere
+      group: idempiere
+      mode: 0755
+    become: yes
   - name: Run /home/idempiere/idempiere-server/console-setup-alt.sh
     shell: 
       cmd: ../setup_vars.sh | ./console-setup-alt.sh
