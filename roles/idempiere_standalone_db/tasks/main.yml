@@ -1,0 +1,28 @@
+- name: Check if '/opt/.ansible_state/roles/idempiere_standalone_db' exists
+  stat:
+    path: /opt/.ansible_state/roles/idempiere_standalone_db
+  register: ansible_state_roles_idempiere_standalone_db
+- name: Installing idempiere_standalone_db
+  block:
+  - name: include role postgres
+    import_role:
+      name: postgres
+  - name: include role idempiere_db
+    import_role:
+      name: idempiere_db
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/idempiere_standalone_db' file
+    file:
+      path: /opt/.ansible_state/roles/idempiere_standalone_db
+      state: touch
+    become: yes
+  when: not ansible_state_roles_idempiere_standalone_db.stat.exists 

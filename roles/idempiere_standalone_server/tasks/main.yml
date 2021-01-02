@@ -1,0 +1,21 @@
+- name: Check if '/opt/.ansible_state/roles/idempiere_standalone_server' exists
+  stat:
+    path: /opt/.ansible_state/roles/idempiere_standalone_server
+  register: ansible_state_roles_idempiere_standalone_server
+- name: Installing idempiere_standalone_server 
+  block:
+  - name: include role postgres
+    import_role:
+      name: postgres
+  - name: include role idempiere_db
+    import_role:
+      name: idempiere_db
+  - name: include role idempiere
+    import_role:
+      name: idempiere
+  - name: Create '/opt/.ansible_state/roles/idempiere_standalone_server' file
+    file:
+      path: /opt/.ansible_state/roles/idempiere_standalone_server
+      state: touch
+    become: yes
+  when: not ansible_state_roles_idempiere_standalone_server.stat.exists 
