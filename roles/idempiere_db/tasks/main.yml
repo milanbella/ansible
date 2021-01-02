@@ -54,7 +54,7 @@
     var: query_a_asset
 - name: Import idempiere db seed
   command: 
-    cmd: psql -f /home/idempiere/Adempiere_pg.dmp "postgresql://adempiere:{{ role_idempiere_db_adempiere_user_password }}@localhost/idempiere"
+    cmd: psql -f /home/idempiere/Adempiere_pg.dmp "postgresql://adempiere:{{ role_idempiere_db_adempiere_user_password | urlencode() }}@localhost/idempiere"
   become: yes
   become_user: idempiere
   when: ('msg' in query_a_asset) and  (query_a_asset.msg.find('does not exist') != 1)

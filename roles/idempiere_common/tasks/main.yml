@@ -25,9 +25,9 @@
       state: absent
     become: yes
     become_user: idempiere
-  - name: Download and unpack https://sourceforge.net/projects/idempiere/files/v7.1/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip in /home/idempiere/idempiere.gtk.linux.x86_64
+  - name: Download and unpack https://sourceforge.net/projects/idempiere/files/v{{ idempiere_version }}/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip in /home/idempiere/idempiere.gtk.linux.x86_64
     unarchive:
-      src: https://sourceforge.net/projects/idempiere/files/v7.1/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip
+      src: https://sourceforge.net/projects/idempiere/files/v{{ idempiere_version }}/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip
       dest: /home/idempiere
       remote_src: yes
     become: yes
