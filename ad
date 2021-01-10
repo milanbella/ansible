@@ -1,0 +1,5 @@
+set -x
+#ansible-playbook -i  hosts_dev.yml --vault-id=develop@~/ansible_valut_password --extra-vars="env=dev" playbooks/idempiere/dev_idempiere_standalone_server.yml
+#ansible-playbook -i  hosts_dev.yml --vault-id=develop@~/ansible_valut_password --extra-vars="env=dev" playbooks/idempiere/dev_haproxy.yml
+#ansible-playbook -i  hosts_dev.yml --vault-id=develop@~/ansible_valut_password --extra-vars="env=dev" playbooks/tests/roles/nodejs.yml
+ansible-playbook -i  hosts_dev.yml --vault-id=develop@~/ansible_valut_password --extra-vars="env=dev" playbooks/tests/roles/onestopsoft.yml

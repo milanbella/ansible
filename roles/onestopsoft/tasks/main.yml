@@ -1,0 +1,91 @@
+- name: Check if '/opt/.ansible_state/roles/onestopsoft' exists.
+  stat:
+    path: /opt/.ansible_state/roles/onestopsoft
+  register: ansible_state_roles_onestopsoft
+- name: Installing idempiere_common.
+  block:
+  - name: Ensure group 'onestopsoft' exists.
+    group:
+      name: onestopsoft
+    become: yes
+  - name: Add the user 'onestopsoft'.
+    user:
+      name: onestopsoft
+      group: onestopsoft
+    become: yes
+  - name: Checkout 'https://github.com/milanbella/onestopsoft.git'.
+    git:
+      repo: https://github.com/milanbella/onestopsoft.git
+      dest: /home/onestopsoft/onestopsoft
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/build.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/b/scripts/build.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+  - name: Run '/home/onestopsoft/onestopsoft/b/scripts/build.sh'.
+    shell: 
+      cmd: /home/onestopsoft/onestopsoft/b/scripts/build.sh
+      chdir: /home/onestopsoft/onestopsoft/b
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/f/scripts/build.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/f/scripts/build.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+  - name: Run '/home/onestopsoft/onestopsoft/f/scripts/build.sh'.
+    shell: 
+      cmd: /home/onestopsoft/onestopsoft/f/scripts/build.sh
+      chdir: /home/onestopsoft/onestopsoft/f
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/start.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/b/scripts/start.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+    become_user: onestopsoft
+  - name: Create '/home/onestopsoft/onestopsoft.service' 
+    template:
+      src: onestopsoft.service.j2
+      dest: /home/onestopsoft/onestopsoft.service
+      owner: onestopsoft
+      group: onestopsoft
+      mode: '0644'
+    become: yes
+    become_user: onestopsoft
+  - name: Enable onestopsoft.service
+    command: systemctl enable /home/onestopsoft/onestopsoft.service
+    args:
+      creates: /etc/systemd/system/onestopsoft.service
+    become: yes
+  - name: Start onestopsoft.service
+    systemd:
+      name: onestopsoft.service
+      state: started
+    become: yes
+  - name: Create '/opt/.ansible_state' folder
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/onestopsoft' file
+    file:
+      path: /opt/.ansible_state/roles/onestopsoft
+      state: touch
+    become: yes
+  when: not ansible_state_roles_onestopsoft.stat.exists
+

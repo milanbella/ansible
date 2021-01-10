@@ -1,0 +1,19 @@
+global
+    maxconn 256
+    user haproxy
+    group haproxy
+
+defaults
+    mode http
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind *:80
+    bind *:443 ssl crt /etc/haproxy/certs/idempiere.pem
+    http-request redirect scheme https unless { ssl_fc }
+    default_backend idempiere
+
+backend idempiere
+    server server1 127.0.0.1:8080 maxconn 32

@@ -1,0 +1,15 @@
+[Unit]
+Description=onestopsoft service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=onestopsoft
+WorkingDirectory=/home/onestopsoft/onestopsoft/b
+ExecStart=/usr/bin/env /home/onestopsoft/onestopsoft/b/scripts/start.sh
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+- name: Get list of plugins from osgi console
+  script:
+    cmd: scripts/get_plugin_list.sh
+  become: yes
+  register: telnet_result
+- name: Set plugin_lines
+  set_fact:
+    plugin_lines: "{{ telnet_result.stdout_lines | select('regex', '\\d+\\t([A-Z]+)\\s+([^_]+)_(.*)') | list }}" 
+- name: Print plugin_lines
+  debug:
+    var: plugin_lines

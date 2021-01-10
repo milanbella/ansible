@@ -1,0 +1,54 @@
+---
+- name: Check if '/opt/.ansible_state/roles/nodejs' exists
+  stat:
+    path: /opt/.ansible_state/roles/nodejs
+  register: ansible_state_roles_nodejs
+- name: Installing common role nodejs.
+  block:
+  # https://nodejs.org/dist/v14.15.4/node-v14.15.4-linux-x64.tar.xz
+  # https://nodejs.org/dist/v14.15.4/node-v14.15.4.tar.gz
+  - name: Download node-v{{ nodejs_version }}-linux-x64.tar.gz.
+    get_url:
+      url: https://nodejs.org/dist/v{{ nodejs_version }}/node-v{{ nodejs_version }}-linux-x64.tar.gz
+      dest: /opt
+    become: yes
+  - name: Extract /opt/node-v{{ nodejs_version }}-linux-x64.tar.gz in /opt
+    unarchive:
+      src: /opt/node-v{{ nodejs_version }}-linux-x64.tar.gz
+      dest: /opt
+      remote_src: true
+    become: yes
+  - name: Create symlink /usr/local/sbin/node
+    file:
+      src: "/opt/node-v{{ nodejs_version }}-linux-x64/bin/node"  
+      dest: "/usr/local/sbin/node"  
+      state: link
+    become: yes
+  - name: Create symlink /usr/local/sbin/npm
+    file:
+      src: "/opt/node-v{{ nodejs_version }}-linux-x64/bin/npm"  
+      dest: "/usr/local/sbin/npm"  
+      state: link
+    become: yes
+  - name: Create symlink /usr/local/sbin/npx
+    file:
+      src: "/opt/node-v{{ nodejs_version }}-linux-x64/bin/npx"  
+      dest: "/usr/local/sbin/npx"  
+      state: link
+    become: yes
+  - name: Create '/opt/.ansible_state' folder.
+    file:
+      path: /opt/.ansible_state
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles' folder.
+    file:
+      path: /opt/.ansible_state/roles
+      state: directory
+    become: yes
+  - name: Create '/opt/.ansible_state/roles/nodejs' file.
+    file:
+      path: /opt/.ansible_state/roles/nodejs
+      state: touch
+    become: yes
+  when: not ansible_state_roles_nodejs.stat.exists 

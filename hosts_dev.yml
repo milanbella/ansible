@@ -21,5 +21,11 @@ all:
         136.244.110.122:
     idempiere_standalone_server:
       hosts:
-        136.244.103.195:
+        199.247.31.166:
+    nodejs:
+      hosts:
+        45.77.137.84:
+    onestopsoft:
+      hosts:
+        45.77.137.84:
 

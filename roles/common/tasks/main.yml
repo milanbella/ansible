@@ -13,7 +13,11 @@
       packages:
       - python3-pip
       - unzip
+      - expect
     become: yes
+  - name: Upgrade linux packages
+    apt:
+      upgrade: safe
   - name: Install common bash profile
     copy:
       src: files/bash_common.sh

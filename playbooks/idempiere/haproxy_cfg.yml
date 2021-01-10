@@ -1,0 +1,6 @@
+- hosts: idempiere_standalone_server
+  roles:
+    - haproxy
+  tasks:
+  - name: Configure haproxy.
+    import_tasks: common/haproxy_cfg.yml

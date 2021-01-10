@@ -6,7 +6,7 @@
   block:
   - name: Create '/home/idempiere/setup_vars.sh'
     template:
-      src: setup_vars.sh
+      src: setup_vars.sh.j2
       dest: /home/idempiere/setup_vars.sh
       owner: idempiere
       group: idempiere
@@ -14,7 +14,7 @@
     become: yes
   - name: Create '/home/idempiere/idempiere-server/idempiereEnv.properties'
     template:
-      src: idempiereEnv.properties
+      src: idempiereEnv.properties.j2
       dest: /home/idempiere/idempiere-server/idempiereEnv.properties
       owner: idempiere
       group: idempiere
@@ -36,7 +36,7 @@
     become_user: idempiere
   - name: Create '/home/idempiere/idempiere.service' 
     template:
-      src: idempiere.service
+      src: idempiere.service.j2
       dest: /home/idempiere/idempiere.service
       owner: idempiere
       group: idempiere
