@@ -70,7 +70,7 @@
     become: yes
   - name: Create config '/etc/haproxy/haproxy.cfg' 
     template:
-      src: haproxy.cfg
+      src: haproxy.cfg.j2
       dest: /etc/haproxy/haproxy.cfg
       owner: haproxy
       group: haproxy

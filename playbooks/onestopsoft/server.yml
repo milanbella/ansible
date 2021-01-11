@@ -1,0 +1,4 @@
+- hosts: onestopsoft
+  roles:
+    - idempiere_standalone_server
+    - onestopsoft

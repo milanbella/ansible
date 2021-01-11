@@ -1,0 +1,4 @@
+- hosts: onestopsoft
+  tasks:
+  - name: Configure haproxy.
+    import_tasks: common/haproxy_cfg.yml
