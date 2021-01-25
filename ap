@@ -1,0 +1,10 @@
+set -x
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/idempiere/idempiere_standalone_server.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/idempiere/haproxy.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/tests/roles/nodejs.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/tests/roles/onestopsoft.yml
+
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/onestopsoft/server.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/onestopsoft/haproxy.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/onestopsoft/haproxy_cfg.yml
+#ansible-playbook -i  hosts_prod.yml --vault-id=prod@~/ansible_valut_password_prod --extra-vars="env=prod" playbooks/onestopsoft/update.yml

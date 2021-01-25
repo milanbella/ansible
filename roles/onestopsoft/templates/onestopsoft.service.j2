@@ -9,7 +9,7 @@ Restart=always
 RestartSec=1
 User=onestopsoft
 WorkingDirectory=/home/onestopsoft/onestopsoft/b
-ExecStart=/usr/bin/env /home/onestopsoft/onestopsoft/b/scripts/start.sh
+ExecStart=/usr/bin/env /home/onestopsoft/onestopsoft/b/scripts/start_{{ env }}.sh
 
 [Install]
 WantedBy=multi-user.target

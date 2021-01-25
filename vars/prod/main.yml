@@ -1,3 +1,4 @@
+---
 role_postgres_postgres_password: "{{ vault_role_postgres_postgres_password }}"
 
 role_idempiere_db_postgres_user_password: "{{ vault_role_postgres_postgres_password }}"

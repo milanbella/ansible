@@ -45,9 +45,9 @@
       chdir: /home/onestopsoft/onestopsoft/f
     become: yes
     become_user: onestopsoft
-  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/start.sh'.
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/start_{{ env }}.sh'.
     file:
-      path: /home/onestopsoft/onestopsoft/b/scripts/start.sh
+      path: /home/onestopsoft/onestopsoft/b/scripts/start_{{ env }}.sh
       owner: onestopsoft
       group: onestopsoft
       mode: 0755

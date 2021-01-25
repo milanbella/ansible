@@ -1,0 +1,60 @@
+- hosts: onestopsoft
+  vars_files:
+    - ../../vars/{{ env }}/main.yml
+    - ../../vars/{{ env }}/vault/main.yml
+  tasks:
+  - name: Stop onestopsoft.service
+    systemd:
+      name: onestopsoft.service
+      state: stopped
+    become: yes
+  - name: Remove directory /home/onestopsoft/onestopsoft
+    file:
+      name: /home/onestopsoft/onestopsoft
+      state: absent
+    become: yes
+  - name: Clone 'https://github.com/milanbella/onestopsoft.git'.
+    git:
+      repo: https://github.com/milanbella/onestopsoft.git
+      dest: /home/onestopsoft/onestopsoft
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/build.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/b/scripts/build.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+  - name: Run '/home/onestopsoft/onestopsoft/b/scripts/build.sh'.
+    shell: 
+      cmd: /home/onestopsoft/onestopsoft/b/scripts/build.sh
+      chdir: /home/onestopsoft/onestopsoft/b
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/f/scripts/build.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/f/scripts/build.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+  - name: Run '/home/onestopsoft/onestopsoft/f/scripts/build.sh'.
+    shell: 
+      cmd: /home/onestopsoft/onestopsoft/f/scripts/build.sh
+      chdir: /home/onestopsoft/onestopsoft/f
+    become: yes
+    become_user: onestopsoft
+  - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/start.sh'.
+    file:
+      path: /home/onestopsoft/onestopsoft/b/scripts/start.sh
+      owner: onestopsoft
+      group: onestopsoft
+      mode: 0755
+    become: yes
+    become_user: onestopsoft
+  - name: Start onestopsoft.service
+    systemd:
+      name: onestopsoft.service
+      state: started
+    become: yes

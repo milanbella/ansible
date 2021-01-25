@@ -1,0 +1,7 @@
+all:
+  hosts:
+  children:
+    onestopsoft:
+      hosts:
+        199.247.31.166:
+

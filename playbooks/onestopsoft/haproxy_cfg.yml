@@ -1,4 +1,7 @@
 - hosts: onestopsoft
+  vars_files:
+    - ../../vars/{{ env }}/main.yml
+    - ../../vars/{{ env }}/vault/main.yml
   tasks:
   - name: Configure haproxy.
     import_tasks: common/haproxy_cfg.yml

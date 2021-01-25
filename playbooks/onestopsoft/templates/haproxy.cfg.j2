@@ -2,12 +2,15 @@ global
     maxconn 256
     user haproxy
     group haproxy
+    log stdout  format raw  local0  info
 
 defaults
     mode http
     timeout connect 5000ms
     timeout client 50000ms
     timeout server 50000ms
+    log global
+    option httplog 
 
 frontend http-in
     bind *:80
