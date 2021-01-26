@@ -1,2 +1,2 @@
 set -x
-mypy module_utils/ module/
+mypy module_utils/ modules/

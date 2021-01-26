@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/runpy.py", line 194, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/usr/lib/python3.8/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/root/ansible/library/modules/idempiere.py", line 109, in <module>
+    main()
+  File "/root/ansible/library/modules/idempiere.py", line 105, in main
+    run_module()
+  File "/root/ansible/library/modules/idempiere.py", line 92, in run_module
+    sqlsList = idempiere.getConnection()
+  File "/root/ansible/library/module_utils/idempiere.py", line 35, in getConnection
+    conn = psycopg2.connect(dbname='idempiere', user='adempiere', password = self.dbAdempiereUserPassword, host = self.dbHost, port = self.dbPort)
+  File "/root/ansible_repo/venv/lib/python3.8/site-packages/psycopg2/__init__.py", line 127, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: FATAL:  password authentication failed for user "adempiere"
+FATAL:  password authentication failed for user "adempiere"
+
