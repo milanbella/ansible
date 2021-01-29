@@ -1,0 +1,6 @@
+- hosts: localhost
+  tasks:
+  - name: Get list of db scripts for upgrade.
+    list_db_update_scripts:
+      db_adempiere_user_password: "p3nR4qlqfc5Venz6AFHo"
+      db_host: "199.247.31.166"

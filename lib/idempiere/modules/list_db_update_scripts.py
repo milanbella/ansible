@@ -1,11 +1,11 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-from module_utils.idempiere import Idempiere
+from idempiere.module_utils.idempiere import Idempiere
 
 DOCUMENTATION = r'''
 ---
-module: idempiere.list_db_update_scripts
+module: idempiere.modules.list_db_update_scripts
 
 short_description: List db update scripts to be exceuted.
 description: List db update scripts to be exceuted when upgrading idempiere to next verstion.
