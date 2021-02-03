@@ -2,6 +2,8 @@
   vars_files:
     - ../../vars/{{ env }}/main.yml
     - ../../vars/{{ env }}/vault/main.yml
+  vars:
+    idempiere_version: 7.1
   roles:
     - idempiere_standalone_server
     - onestopsoft

@@ -4,6 +4,6 @@ set -x
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/roles/nodejs.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/roles/onestopsoft.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/server.yml
-#ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/haproxy.yml
+ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/haproxy.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/haproxy_cfg.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/update.yml
