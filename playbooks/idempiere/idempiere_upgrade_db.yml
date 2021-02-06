@@ -1,0 +1,64 @@
+- hosts: onestopsoft
+  vars_files:
+    - ../../vars/{{ env }}/main.yml
+    - ../../vars/{{ env }}/vault/main.yml
+  vars:
+    db_adempiere_user_password: "{{ vault_role_idempiere_db_adempiere_user_password }}" 
+    db_host: localhost
+    idempiere_version: 8.2 
+  tasks:
+  - name: Ensure group 'idempiere' exists
+    group:
+      name: idempiere
+    become: yes
+  - name: Add the user 'idempiere'
+    user:
+      name: idempiere
+      group: idempiere
+    become: yes
+  - name: Ensure directory /home/idempiere/db exists
+    file:
+      path: /home/idempiere/db
+      state: directory
+    become: yes
+    become_user: idempiere
+  - name: Remove folder /home/idempiere/db/idempiere-server
+    file:
+      path: /home/idempiere/db/idempiere-server
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Remove folder /home/db/idempiere/idempiere.gtk.linux.x86_64
+    file:
+      path: /home/idempiere/db/idempiere.gtk.linux.x86_64
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Download and unpack https://sourceforge.net/projects/idempiere/files/v{{ idempiere_version }}/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip in /home/idempiere/db/idempiere.gtk.linux.x86_64
+    unarchive:
+      src: "https://sourceforge.net/projects/idempiere/files/v{{ idempiere_version }}/server/idempiereServer{{ idempiere_version }}.gtk.linux.x86_64.zip"
+      dest: /home/idempiere/db
+      remote_src: yes
+    become: yes
+    become_user: idempiere
+  - name: Move /home/idempiere/db/idempiere.gtk.linux.x86_64/idempiere-server to /home/idempiere/db/idempiere-server
+    command:
+      cmd: mv /home/idempiere/db/idempiere.gtk.linux.x86_64/idempiere-server /home/idempiere/db
+      creates: /home/idempiere/db/idempiere-server
+    become: yes
+    become_user: idempiere
+  - name: Remove folder /home/idempiere/db/idempiere.gtk.linux.x86_64
+    file:
+      path: /home/idempiere/db/idempiere.gtk.linux.x86_64
+      state: absent
+    become: yes
+    become_user: idempiere
+  - name: Get list of db scripts for upgrade.
+    onestopsoft.idempiere.list_db_update_scripts:
+      db_adempiere_user_password: "{{ db_adempiere_user_password }}"
+      db_host: "{{ db_host }}"
+      idempiere_path: /home/idempiere/db/idempiere-server 
+    register: result
+  - name: Display result.
+    debug:
+      var: result

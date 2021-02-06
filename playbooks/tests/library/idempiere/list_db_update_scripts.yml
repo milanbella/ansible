@@ -1,10 +1,23 @@
 - hosts: onestopsoft
+  vars_files:
+    - ../../../../vars/{{ env }}/main.yml
+    - ../../../../vars/{{ env }}/vault/main.yml
+  vars:
+    db_adempiere_user_password: "{{ vault_role_idempiere_db_adempiere_user_password }}" 
+    db_host: localhost
+    idempiere_version: 8.2 
   tasks:
+  - name: Debug
+    debug:
+      var: db_adempiere_user_password
   - name: Get list of db scripts for upgrade.
     onestopsoft.idempiere.list_db_update_scripts:
-      db_adempiere_user_password: "p3nR4qlqfc5Venz6AFHo"
-      db_host: "199.247.31.166"
+      idempiere_path: /home/idempiere/db/idempiere-server
+      db_adempiere_user_password: "{{ db_adempiere_user_password }}"
     register: result
   - name: Display result.
     debug:
       var: result
+
+
+
