@@ -1,6 +1,5 @@
 set -x
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/idempiere/idempiere_standalone_server.yml
-#ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/idempiere/haproxy.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/roles/nodejs.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/roles/onestopsoft.yml
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/server.yml
@@ -10,5 +9,8 @@ set -x
 #ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/idempiere/idempiere_upgrade_db.yml
 
 
-ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/library/idempiere/list_db_update_scripts.yml
+#ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/tests/library/idempiere/list_db_update_scripts.yml
 
+
+#ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/server.yml
+#ansible-playbook -i  hosts_test.yml --vault-id=test@~/ansible_valut_password_test --extra-vars="env=test" playbooks/onestopsoft/haproxy.yml

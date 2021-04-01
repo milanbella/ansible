@@ -45,6 +45,12 @@
       chdir: /home/onestopsoft/onestopsoft/f
     become: yes
     become_user: onestopsoft
+  - name: Run '/home/onestopsoft/onestopsoft/b/scripts/build.sh'.
+    shell: 
+      cmd: /home/onestopsoft/onestopsoft/b/scripts/build.sh
+      chdir: /home/onestopsoft/onestopsoft/b
+    become: yes
+    become_user: onestopsoft
   - name: Ensure execute permissions on '/home/onestopsoft/onestopsoft/b/scripts/start_{{ env }}.sh'.
     file:
       path: /home/onestopsoft/onestopsoft/b/scripts/start_{{ env }}.sh
